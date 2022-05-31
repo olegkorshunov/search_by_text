@@ -1,6 +1,6 @@
 from db import schemas
 from db.cruds import crud_post
-from fastapi import APIRouter, HTTPException, Query, status
+from fastapi import APIRouter, HTTPException, Query, status, Response
 from typing import List
 
 router_post = APIRouter(prefix="/post")
@@ -26,3 +26,11 @@ async def read_post(post_id: int):
     if db_post is None:
         raise HTTPException(status_code=404, detail="Post not found")
     return db_post
+
+
+@router_post.delete("/{post_id}")
+async def delete_post(post_id: int):
+    db_post = await crud_post.delete_post(post_id=post_id)
+    if db_post == 0:
+        raise HTTPException(status_code=404, detail="Post not found")
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
