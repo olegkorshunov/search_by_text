@@ -11,10 +11,13 @@ async def get_posts(skip: int = 0, limit: int = 20, search: Optional[str] = None
             .filter(posts.c.text.contains(search))
             .offset(skip)
             .limit(limit)
+            .order_by(posts.c.created_date)
         )
         results = await database.fetch_all(query)
     else:
-        results = await database.fetch_all(posts.select().offset(skip).limit(limit))
+        results = await database.fetch_all(
+            posts.select().offset(skip).limit(limit).order_by(posts.c.created_date)
+        )
     return [dict(result) for result in results]
 
 
@@ -26,5 +29,4 @@ async def get_post(post_id: int):
 async def delete_post(post_id: int):
     query = posts.delete().where(posts.c.id == post_id)
     result = await database.execute(query)
-    print(result)
     return result
