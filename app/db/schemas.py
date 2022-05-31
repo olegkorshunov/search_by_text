@@ -1,9 +1,11 @@
-from typing import List
-from pydantic import BaseModel
 from datetime import datetime
+from typing import List
+
+from pydantic import BaseModel
 
 
 class Post(BaseModel):
+    id: int
     text: str
     created_date: datetime
     rubrics: str

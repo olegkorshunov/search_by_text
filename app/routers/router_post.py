@@ -1,8 +1,21 @@
 from db import schemas
 from db.cruds import crud_post
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, Query, status
+from typing import List
 
 router_post = APIRouter(prefix="/post")
+
+
+@router_post.get("/", response_model=List[schemas.Post], status_code=status.HTTP_200_OK)
+async def read_posts(
+    skip: int = 0,
+    limit: int = 20,
+    search: str = Query(None, max_length=20, description="Search by substring"),
+):
+    db_posts = await crud_post.get_posts(skip=skip, limit=limit, search=search)
+    if not db_posts:
+        raise HTTPException(status_code=404, detail="Posts not found")
+    return db_posts
 
 
 @router_post.get(
