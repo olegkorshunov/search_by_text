@@ -1,9 +1,12 @@
-# from typing import List
-# from pydantic import BaseModel
+from typing import List
+from pydantic import BaseModel
+from datetime import datetime
 
 
-# class Item(BaseModel):
+class Post(BaseModel):
+    text: str
+    created_date: datetime
+    rubrics: str
 
-
-#     class Config:
-#         orm_mode = True
+    class Config:
+        orm_mode = True

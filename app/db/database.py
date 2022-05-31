@@ -1,6 +1,7 @@
-import databases
-from sqlalchemy import create_engine, MetaData
 import os
+
+import databases
+from sqlalchemy import MetaData, create_engine
 
 BASE_FOLDER = os.path.dirname(os.path.abspath(__file__))
 DB_NAME = "posts.sqlite"
